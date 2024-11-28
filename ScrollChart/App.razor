@@ -1,0 +1,52 @@
+﻿<head>
+    <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
+</head>
+
+<button @onclick="ToggleScrollbar">Scrollbar toggle</button>
+
+<p>Scrollbar status: @_scrollbarEnabled</p>
+
+<SfChart @ref="_chart">
+    <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category">
+        <ChartAxisScrollbarSettings Enable="@_scrollbarEnabled"
+                                    PointsLength="2">
+        </ChartAxisScrollbarSettings>
+    </ChartPrimaryXAxis>
+    <ChartSeriesCollection>
+        <ChartSeries DataSource="@Sales" XName="Month" YName="SalesValue" Type="ChartSeriesType.Column">
+        </ChartSeries>
+    </ChartSeriesCollection>
+</SfChart>
+
+@code {
+    // Change this to true and everything works as expected.
+    private Boolean _scrollbarEnabled = false;
+
+    private SfChart _chart;
+
+    private async void ToggleScrollbar()
+    {
+        _scrollbarEnabled = !_scrollbarEnabled;
+        StateHasChanged();
+        await _chart.RefreshAsync();
+        StateHasChanged();
+    }
+
+    public class SalesInfo
+    {
+        public string Month { get; set; }
+        public double SalesValue { get; set; }
+    }
+
+    public List<SalesInfo> Sales = new List<SalesInfo>
+    {
+        new SalesInfo { Month = "Jan", SalesValue = 35 },
+        new SalesInfo { Month = "Feb", SalesValue = 28 },
+        new SalesInfo { Month = "Mar", SalesValue = 34 },
+        new SalesInfo { Month = "Apr", SalesValue = 32 },
+        new SalesInfo { Month = "May", SalesValue = 40 },
+        new SalesInfo { Month = "Jun", SalesValue = 32 },
+        new SalesInfo { Month = "Jul", SalesValue = 35 }
+    };
+
+}
